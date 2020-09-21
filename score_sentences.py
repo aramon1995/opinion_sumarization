@@ -8,7 +8,7 @@ def sentence_most_popular(sentences,source,vocab):
             sentences[s]['score'] = similarity_matrix[1][similarity_matrix[0][0].index(s)].mean()
         else:
             sentences[s]['score'] = 0
-    
+
 
 def sentence_refers_to_news(sentences, source, news, vocab):
     similarity_matrix = similarities.sentences_similarity(sentences, source, news, 'news', vocab)
@@ -17,7 +17,7 @@ def sentence_refers_to_news(sentences, source, news, vocab):
             sentences[i]['score'] = similarity_matrix[1][similarity_matrix[0][0].index(i)][0]
         else:
             sentences[i]['score'] = 0
-    
+
 
 def heuristic_explanatory_ranking(topics):
     cwb = {}

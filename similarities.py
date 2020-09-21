@@ -1,6 +1,5 @@
 import numpy as np
 from nltk.corpus import wordnet as wn
-import math
 from sklearn.metrics.pairwise import cosine_similarity
 
 

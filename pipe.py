@@ -7,10 +7,11 @@ import score_sentences
 import polarity
 import filters
 import evaluation
+import os
 
 
 
-def v1(data_dir,source,news_dir):
+def v1(data_dir,source,news_dir,out):
     load_data.add_model_stopw(load_data.nlp)
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
@@ -25,7 +26,10 @@ def v1(data_dir,source,news_dir):
     topics_words = filters.filter_topics_for_news_similarity(0.5, vocab, topics_words, source, nouns, unit='words')
     topics = extract_topic.map_sentences_into_topics(sentences,source,topics_words,source,vocab)
     score_sentences.heuristic_explanatory_ranking(topics)
-    f = open('result/'+source+'.txt','w')
+    out_path = out+'v1/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -64,7 +68,7 @@ def v1(data_dir,source,news_dir):
 
 
 
-def v2(data_dir,source,news_dir):
+def v2(data_dir,source,news_dir,out):
     load_data.add_model_stopw(load_data.nlp)
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
@@ -79,7 +83,10 @@ def v2(data_dir,source,news_dir):
     topics, sil = extract_topic.extract_topic_of_sentences(sentences,source,vocab=vocab)
     topics = filters.filter_topics_for_news_similarity(0.5,vocab,topics,source,nouns)
     score_sentences.heuristic_explanatory_ranking(topics)
-    f = open('result/v2/'+source+'.txt','w')
+    out_path = out+'v2/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -113,7 +120,7 @@ def v2(data_dir,source,news_dir):
 
 
 
-def v3_4(data_dir,source,news_dir):
+def v3_4(data_dir,source,news_dir,out):
     load_data.add_model_stopw(load_data.nlp)
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
@@ -127,7 +134,10 @@ def v3_4(data_dir,source,news_dir):
     topics_words,sil = extract_topic.extract_topic_of_words(vocab,source)
     topics_words = filters.filter_topics_for_news_similarity(0.5, vocab, topics_words, source, nouns, unit='words')
     topics = extract_topic.map_sentences_into_topics(sentences,source,topics_words,source,vocab)
-    f = open('result/v3/'+source+'.txt','w')
+    out_path = out+'v3/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -163,7 +173,10 @@ def v3_4(data_dir,source,news_dir):
         f.write('\n\n***----------------------------------------------------------------------------------------------------***\n\n')
     f.close()
     score_sentences.sentence_refers_to_news(sentences,source,nouns,vocab)
-    f = open('result/v4/'+source+'.txt','w')
+    out_path = out+'v4/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -201,7 +214,7 @@ def v3_4(data_dir,source,news_dir):
 
 
 
-def v5_6(data_dir,source,news_dir):
+def v5_6(data_dir,source,news_dir,out):
     # load_data.add_model_stopw(load_data.nlp)
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
@@ -215,7 +228,10 @@ def v5_6(data_dir,source,news_dir):
     
     topics, sil = extract_topic.extract_topic_of_sentences(sentences,source,vocab=vocab)
     topics = filters.filter_topics_for_news_similarity(0.5,vocab,topics,source,nouns)
-    f = open('result/v5/'+source+'.txt','w')
+    out_path = out+'v5/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -246,7 +262,10 @@ def v5_6(data_dir,source,news_dir):
     f.close()
 
     score_sentences.sentence_refers_to_news(sentences,source,nouns,vocab)
-    f = open('result/v6/'+source+'.txt','w')
+    out_path = out+'v6/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -278,7 +297,7 @@ def v5_6(data_dir,source,news_dir):
 
 
 
-def v1_3_4_we(data_dir,source,news_dir):
+def v1_3_4_we(data_dir,source,news_dir,out):
     load_data.add_model_stopw(load_data.nlp)
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
@@ -294,7 +313,10 @@ def v1_3_4_we(data_dir,source,news_dir):
     topics = extract_topic.map_sentences_into_topics(sentences,source,topics_words,source,vocab)
     
     score_sentences.heuristic_explanatory_ranking(topics)
-    f = open('result/v1_we/'+source+'.txt','w')
+    out_path = out+'v1_we/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -329,7 +351,10 @@ def v1_3_4_we(data_dir,source,news_dir):
         f.write('\n\n***----------------------------------------------------------------------------------------------------***\n\n')
     f.close()
 
-    f = open('result/v3_we/'+source+'.txt','w')
+    out_path = out+'v3_we/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -366,7 +391,10 @@ def v1_3_4_we(data_dir,source,news_dir):
     f.close()
 
     score_sentences.sentence_refers_to_news(sentences,source,nouns,vocab)
-    f = open('result/v4_we/'+source+'.txt','w')
+    out_path = out+'v4_we/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -405,7 +433,7 @@ def v1_3_4_we(data_dir,source,news_dir):
 
 
 
-def v2_5_6_we(data_dir,source,news_dir):
+def v2_5_6_we(data_dir,source,news_dir,out):
     load_data.add_model_stopw(load_data.nlp)
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
@@ -421,7 +449,10 @@ def v2_5_6_we(data_dir,source,news_dir):
     topics = filters.filter_topics_for_news_similarity(0.5,vocab,topics,source,nouns)
     
     score_sentences.heuristic_explanatory_ranking(topics)
-    f = open('result/v2_we/'+source+'.txt','w')
+    out_path = out+'v2_we/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -450,7 +481,10 @@ def v2_5_6_we(data_dir,source,news_dir):
         f.write('\n\n***----------------------------------------------------------------------------------------------------***\n\n')
     f.close()
 
-    f = open('result/v5_we/'+source+'.txt','w')
+    out_path = out+'v5_we/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -481,7 +515,10 @@ def v2_5_6_we(data_dir,source,news_dir):
     f.close()
 
     score_sentences.sentence_refers_to_news(sentences,source,nouns,vocab)
-    f = open('result/v6_we/'+source+'.txt','w')
+    out_path = out+'v6_we/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
     print('silhouette: ',sil,'\n\n')
     f.write('silhouette: '+str(sil)+'\n\n')
     for topic in topics:
@@ -513,27 +550,44 @@ def v2_5_6_we(data_dir,source,news_dir):
 if __name__ == "__main__":
     import sys
     import time
-    from os.path import join
-    from os import listdir
-    funct_map = {'v1':v1,'v2':v2,'v3_4':v3_4,'v5_6':v5_6,'v1_3_4_we':v1_3_4_we,'v2_5_6_we':v2_5_6_we}
-    start = time.time()
-    opinions_path = 'data/etecsa/opinions/'
-    news_path = 'data/etecsa/news/'
-    files = listdir(opinions_path)
-    files.sort()
-    print(files)
-    for f in files:
-        funct_map[sys.argv[1]](join(opinions_path,f),f.split('.')[0],join(news_path,f.split('.')[0]+'.txt'))    
+    import multiprocessing as mp
+
+    function_map = {'v1':v1,'v2':v2,'v3_4':v3_4,'v5_6':v5_6,'v1_3_4_we':v1_3_4_we,'v2_5_6_we':v2_5_6_we}
+    function = sys.argv[1]
+    opinion_path = sys.argv[2]
+    news_path = sys.argv[3]
+    out_path = sys.argv[4]
+    if function not in function_map:
+        raise Exception('function not valid, posible function: '+function_map.keys())
+    if not os.path.exists(opinion_path):
+        raise Exception('opinion path: '+opinion_path+' is not valid')
+    if not os.path.exists(news_path):
+        raise Exception('news path: '+news_path+' is not valid')
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
     
-    # v1(join(opinions_path,'prueba_4g.csv'),'pruebas_4g',join(news_path,'prueba_4g.txt'))  
-    print('time ', time.time()-start)
-
-
-    import sounddevice as sd
-    import soundfile as sf
-
-    filename = '/media/Data/Storage/file_example_WAV_1MG.wav'
-    # Extract data and sampling rate from file
-    data, fs = sf.read(filename, dtype='float32')  
-    sd.play(data, fs)
-    status = sd.wait()
+    start = time.time()
+    if os.path.isfile(opinion_path):
+        source = opinion_path.split('/')[-1].split('.')[0]
+        news = os.path.join(news_path,source)+'.txt'
+        function_map[function](opinion_path,source,news,out_path)
+    else:
+        files = os.listdir(opinion_path)
+        files.sort()
+        
+        # for f in files:
+        #     opinion = os.path.join(opinion_path,f)
+        #     source = f.split('.')[0]
+        #     news = os.path.join(news_path,source)+'.txt'
+        #     function_map[function](opinion,source,news,out_path)
+        
+        params = []
+        for f in files:
+            opinion = os.path.join(opinion_path,f)
+            source = f.split('.')[0]
+            news = os.path.join(news_path,source)+'.txt'
+            params.append((opinion,source,news,out_path))
+        pool = mp.Pool(mp.cpu_count())
+        pool.starmap(function_map[function],params)
+        pool.close()
+    print('EXECUTION TIME: ',time.time()-start)

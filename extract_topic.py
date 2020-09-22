@@ -40,6 +40,7 @@ def extract_topic_of_sentences(sentences, source, vocab = None, similarity_matri
             similarity_matrix = similarities.sentences_similarity(sentences, source, sentences, source, vocab)
     distance_matrix = 1 - similarity_matrix[1]
     HAC = AgglomerativeClustering(affinity='precomputed', compute_full_tree=True, linkage='average', n_clusters=None, distance_threshold=(distance_matrix.min(axis=1).mean()+distance_matrix.max(axis=1).mean())/2)
+    print(similarity_matrix)
     HAC.fit(distance_matrix)
     if HAC.n_clusters_ == 1 or HAC.n_clusters_ == len(distance_matrix[0]):
         sil = 0

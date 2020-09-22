@@ -63,7 +63,7 @@ def create_similarity_matrix_words_we(vocab):
 
 
 
-def sentences_similarity(sentence_list1, source1, sentence_list2, source2, vocab):
+def sentences_similarity1(sentence_list1, source1, sentence_list2, source2, vocab):
     sentences_list1_in_similarity_matrix = []
     sentences_list2_in_similarity_matrix = []
     similarity_matrix_of_sentences = np.ones((len(sentence_list1),len(sentence_list2)))
@@ -113,4 +113,46 @@ def sentences_similarity(sentence_list1, source1, sentence_list2, source2, vocab
     similarity_matrix_of_sentences = similarity_matrix_of_sentences[:len(sentences_list1_in_similarity_matrix),:len(sentences_list2_in_similarity_matrix)]
     return [[sentences_list1_in_similarity_matrix,sentences_list2_in_similarity_matrix],similarity_matrix_of_sentences]
 
-            
+
+
+
+def sentences_similarity(sentence_list1, source1, sentence_list2, source2, vocab):
+    print(sentence_list1[59]['content'])
+    similarity_matrix = []
+    sentences_list1_in_similarity_matrix = []
+    sentences_list2_in_similarity_matrix = []
+
+    for sentence_index1 in enumerate(sentence_list1):
+        similarity_row = []
+        for sentence_index2 in enumerate(sentence_list2):
+            tokens_similarity = []
+            idf1 = []
+            for token1 in sentence_index1[1]['tokens']:
+                if token1 not in vocab['words_in_similarity_matrix']:
+                    continue
+                idf1.append(len(sentence_list1)/len(vocab['tokens'][token1]['hit_'+source1]))
+                idf2 = []
+                tokens_row = []
+                for token2 in sentence_index2[1]['tokens']:
+                    if token2 not in vocab['words_in_similarity_matrix']:
+                        continue
+                    idf2.append(len(sentence_list2)/len(vocab['tokens'][token2]['hit_'+source2]))
+                    tokens_row.append(vocab['similarity_matrix_of_words'][vocab['words_in_similarity_matrix'].index(token1),vocab['words_in_similarity_matrix'].index(token2)])
+                if len(tokens_row) != 0:
+                    tokens_similarity.append(tokens_row)
+
+            if len(tokens_similarity) == 0:
+                continue
+            if sentence_index2[0] not in sentences_list2_in_similarity_matrix:
+                sentences_list2_in_similarity_matrix.append(sentence_index2[0])
+            tokens_similarity = np.array(tokens_similarity)
+            idf1 = np.array(idf1)
+            idf2 = np.array(idf2)
+            s1 = (tokens_similarity.max(axis = 1)*idf1).sum()/idf1.sum()
+            s2 = (tokens_similarity.max(axis = 0)*idf2).sum()/idf2.sum()
+            similarity_row.append((s1+s2)/2)
+        if len(similarity_row) == 0:
+            continue
+        similarity_matrix.append(similarity_row)
+        sentences_list1_in_similarity_matrix.append(sentence_index1[0])
+    return [[sentences_list1_in_similarity_matrix,sentences_list2_in_similarity_matrix],np.array(similarity_matrix)]

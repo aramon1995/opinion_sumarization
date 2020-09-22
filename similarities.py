@@ -117,7 +117,6 @@ def sentences_similarity1(sentence_list1, source1, sentence_list2, source2, voca
 
 
 def sentences_similarity(sentence_list1, source1, sentence_list2, source2, vocab):
-    print(sentence_list1[59]['content'])
     similarity_matrix = []
     sentences_list1_in_similarity_matrix = []
     sentences_list2_in_similarity_matrix = []

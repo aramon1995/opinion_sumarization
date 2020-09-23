@@ -1,5 +1,4 @@
 import load_data
-import preprocess
 import similarities
 import extract_topic
 import score_topic
@@ -12,7 +11,6 @@ import os
 
 
 def v1(data_dir,source,news_dir,out):
-    load_data.add_model_stopw(load_data.nlp)
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
     news = load_data.load_news(news_dir)
@@ -69,7 +67,6 @@ def v1(data_dir,source,news_dir,out):
 
 
 def v2(data_dir,source,news_dir,out):
-    load_data.add_model_stopw(load_data.nlp)
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
     news = load_data.load_news(news_dir)
@@ -121,7 +118,6 @@ def v2(data_dir,source,news_dir,out):
 
 
 def v3_4(data_dir,source,news_dir,out):
-    load_data.add_model_stopw(load_data.nlp)
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
     news = load_data.load_news(news_dir)
@@ -214,8 +210,7 @@ def v3_4(data_dir,source,news_dir,out):
 
 
 
-def v5_6(data_dir,source,news_dir,out):
-    # load_data.add_model_stopw(load_data.nlp)
+def v5_6(data_dir,source,news_dir,out):    
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
     news = load_data.load_news(news_dir)
@@ -298,7 +293,6 @@ def v5_6(data_dir,source,news_dir,out):
 
 
 def v1_3_4_we(data_dir,source,news_dir,out):
-    load_data.add_model_stopw(load_data.nlp)
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
     news = load_data.load_news(news_dir)
@@ -434,7 +428,6 @@ def v1_3_4_we(data_dir,source,news_dir,out):
 
 
 def v2_5_6_we(data_dir,source,news_dir,out):
-    load_data.add_model_stopw(load_data.nlp)
     opinions = load_data.load_csv(data_dir)
     data = [o['content'] for o in opinions]
     news = load_data.load_news(news_dir)
@@ -557,6 +550,14 @@ if __name__ == "__main__":
     opinion_path = sys.argv[2]
     news_path = sys.argv[3]
     out_path = sys.argv[4]
+    preprocess = sys.argv[5]
+    if preprocess == 'spacy':
+        import preprocess
+        load_data.add_model_stopw(preprocess.model)
+    elif preprocess == 'nltk':
+        import preprocess_NLTK as preprocess
+    else:
+        raise Exception('preprocess option not valid, valid options are \'nltk\' or \'spacy\'')
     if function not in function_map:
         raise Exception('function not valid, posible function: '+function_map.keys())
     if not os.path.exists(opinion_path):

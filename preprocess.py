@@ -1,6 +1,7 @@
-from load_data import nlp
 from nltk.corpus import wordnet as wn
+import spacy
 
+nlp = spacy.load('es_core_news_md') 
 map_Spacy_to_wordnet_POS ={'PROPN': 'n', 'DET': 'r', 'ADJ': 'a', 'ADV': 'r', 'NOUN': 'n', 'DET': 'r', 'PROPN': 'n', 'VERB': 'v'}
 
 def extract_sentences(text_list, source, vocab):

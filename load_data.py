@@ -1,7 +1,4 @@
 import csv
-import spacy
-
-nlp = spacy.load('es_core_news_md') 
 
 def load_csv(data_file, delimiter=','):
     data = []

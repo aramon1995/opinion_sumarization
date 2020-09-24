@@ -553,7 +553,7 @@ if __name__ == "__main__":
     preprocess = sys.argv[5]
     if preprocess == 'spacy':
         import preprocess
-        load_data.add_model_stopw(preprocess.model)
+        load_data.add_model_stopw(preprocess.nlp)
     elif preprocess == 'nltk':
         import preprocess_NLTK as preprocess
     else:

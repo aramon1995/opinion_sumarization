@@ -589,7 +589,7 @@ if __name__ == "__main__":
             news = os.path.join(news_path,source)+'.txt'
             params.append((opinion,source,news,out_path))
         pool = mp.Pool(mp.cpu_count())
-        pool.starmap(function_map[function],params)
+        pool.starmap_async(function_map[function],params)
         pool.close()
         pool.join()
     print('EXECUTION TIME: ',time.time()-start)

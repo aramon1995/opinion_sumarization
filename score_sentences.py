@@ -14,9 +14,9 @@ def sentence_refers_to_news(sentences, source, news, vocab):
     similarity_matrix = similarities.sentences_similarity(sentences, source, news, 'news', vocab)
     for i in range(len(sentences)):
         if i in similarity_matrix[0][0]:
-            sentences[i]['score'] = similarity_matrix[1][similarity_matrix[0][0].index(i)][0]
+            sentences[i]['score_refers_to_news'] = similarity_matrix[1][similarity_matrix[0][0].index(i)][0]
         else:
-            sentences[i]['score'] = 0
+            sentences[i]['score_refers_to_news'] = 0
 
 
 def heuristic_explanatory_ranking(topics):
@@ -48,6 +48,21 @@ def heuristic_explanatory_ranking(topics):
                 idf = (normB - cwb[w] + 0.5)/(cwb[w] + 0.5)
                 score += (idf)*((cluster['words_counts'][w]*(k1 + 1))/(cluster['words_counts'][w] + k1))
             
-            sentence['score'] = score
+            sentence['score_heuristic_explanatory_ranking'] = score
         del cluster['words_counts']
         del cluster['total_words']
+
+
+def assign_pos(sents):
+    for sent in enumerate(sents):
+        if 'pos' in sent[1].keys():
+            sent[1]['pos'].append(sent[0])
+        else:
+            sent[1]['pos'] = [sent[0]]
+
+def combine_pos(sents):
+    for sent in sents:
+        acum = 0
+        for pos in sent['pos']:
+            acum += pos
+        sent['pos'] = acum/len(sent['pos'])  

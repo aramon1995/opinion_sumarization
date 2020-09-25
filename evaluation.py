@@ -1,7 +1,6 @@
 import numpy as np
 
 
-
 def jensen_shannon_divergence(text, summary):
     cwt = []
     cws = []

@@ -32,8 +32,8 @@ def extract_topic_of_words(vocab, source):
 
 
 
-def extract_topic_of_sentences(sentences, source, vocab = None, similarity_matrix = None):
-    if similarity_matrix == None:
+def extract_topic_of_sentences(sentences, source, vocab = None, similarity_matrix = []):
+    if len(similarity_matrix) == []:
         if vocab == None or source == None:
             raise Exception('If similarity matrix is None, vocab and source must be provided')
         else:

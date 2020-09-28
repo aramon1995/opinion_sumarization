@@ -1,4 +1,5 @@
 import similarities
+from collections import Counter
 
 
 def sentence_most_popular(sentences,source,vocab):
@@ -17,6 +18,18 @@ def sentence_refers_to_news(sentences, source, news, vocab):
             sentences[i]['score_refers_to_news'] = similarity_matrix[1][similarity_matrix[0][0].index(i)][0]
         else:
             sentences[i]['score_refers_to_news'] = 0
+
+
+def tfidf(sentences,source,vocab):
+    keys = list(vocab['tokens'].keys())
+    for sentence in enumerate(sentences):
+        tokens = Counter(sentence[1]['tokens'])
+        tfidf = 0
+        for token in tokens:
+            tf = (tokens[token]/len(sentence[1]['tokens']))
+            idf = len(sentences)/len(vocab['tokens'][token]['hit_'+source])
+            tfidf += tf*idf
+        sentence[1]['score_tfidf'] = tfidf 
 
 
 def heuristic_explanatory_ranking(topics):

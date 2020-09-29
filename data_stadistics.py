@@ -38,7 +38,9 @@ def corpus_statistics(dir):
     print('CANTIDAD DE TERMINOS: ',cant_terms)
     print('PROMEDIO DE OPINIONES POR NOTICIA: ',cant_prom_op_for_news)
     print('PROMEDIO DE ORACIONES POR OPINION: ',prom_sent_for_op)
-    print('PROMEDIO DE TERMINOS POR ORACION: ',prom_term_for_op)
+    print('PROMEDIO DE TERMINOS POR OPINION: ',prom_term_for_op)
+
+corpus_statistics('/media/Data/Storage/work/os_data/covid/opinions/')
 
 
 

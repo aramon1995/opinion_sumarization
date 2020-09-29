@@ -19,6 +19,14 @@ def sentence_refers_to_news(sentences, source, news, vocab):
         else:
             sentences[i]['score_refers_to_news'] = 0
 
+def sentence_refers_to_news_title(sentences, source, news_title, vocab):
+    similarity_matrix = similarities.sentences_similarity(sentences, source, news_title, 'news_title', vocab)
+    for i in range(len(sentences)):
+        if i in similarity_matrix[0][0]:
+            sentences[i]['score_refers_to_news_title'] = similarity_matrix[1][similarity_matrix[0][0].index(i)][0]
+        else:
+            sentences[i]['score_refers_to_news_title'] = 0
+
 
 def tfidf(sentences,source,vocab):
     keys = list(vocab['tokens'].keys())

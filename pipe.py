@@ -767,13 +767,70 @@ def tf_idf_comb(data_dir,source,news_dir,out):
 
 
 
+def v4_title(data_dir,source,news_dir,out):
+    opinions = load_data.load_csv(data_dir)
+    data = [o['content'] for o in opinions]
+    news = load_data.load_news(news_dir)
+    title = load_data.load_news('/'.join(news_dir.split('/')[:-1])+'/../titles/'+source+'.txt')
+    vocab = {'tokens':{},'ignored_tokens':{}}
+    sentences = preprocess.extract_sentences(data,source,vocab)
+    nouns = preprocess.extract_nouns_from_news(news,vocab)
+    title = preprocess.extract_nouns_from_news(title,vocab,source='news_title')
+    polarity.sentence_polarity(sentences,vocab)
+    sentences = filters.filter_sentences_for_polarity(sentences)
+    similarities.create_similarity_matrix_words_wn(vocab)
+    topics_words,sil = extract_topic.extract_topic_of_words(vocab,source)
+    topics_words = filters.filter_topics_for_news_similarity(0.5, vocab, topics_words, source, nouns, unit='words')
+    topics = extract_topic.map_sentences_into_topics(sentences,source,topics_words,source,vocab)
+    score_sentences.sentence_refers_to_news(sentences,source,nouns,vocab)
+    score_sentences.sentence_refers_to_news_title(sentences,source,title,vocab)
+    out_path = out+'v4_title/'
+    if not os.path.exists(out_path):
+        os.mkdir(out_path)
+    f = open(out_path+source+'.txt','w')
+    print('silhouette: ',sil,'\n\n')
+    f.write('silhouette: '+str(sil)+'\n\n')
+    for topic in topics:
+        print('topic: ',topics_words[topic['topic_index']]['tokens'],'\n\n')
+        f.write('topic: '+str(topics_words[topic['topic_index']]['tokens'])+'\n\n')
+        sents = topic['sentences']
+        sents.sort(key=lambda s:s['score_refers_to_news']+5*s['score_refers_to_news_title'],reverse = True)
+        cant = 3 if len(sents)>3 else len(sents)
+        if cant == 0:
+            print('NO SENTENCES FOR TOPIC: ', topic['topic_index'])
+            f.write('NO SENTENCES FOR TOPIC: '+str(topic['topic_index'])+'\n')
+            continue
+        s = []
+        for sentence in range(cant):
+            s.append(sents[sentence])
+            print(sents[sentence]['content'])
+            f.write(str(sents[sentence]['content'])+'\n')
+            if sentence<cant:
+                print('*********')
+                f.write('*********\n')
+            print('\n')
+        js_topic = evaluation.jensen_shannon_divergence(sents,s)
+        js_opinions = evaluation.jensen_shannon_divergence(sentences,s)
+        js_news = evaluation.jensen_shannon_divergence(nouns,s)
+        print('jensen shannon divergence respect to topic: ',js_topic)
+        print('jensen shannon divergence respect to all opinions: ',js_opinions)
+        print('jensen shannon divergence respect to news: ',js_news)
+        f.write('jensen shannon divergence respect to topic: '+str(js_topic)+'\n')
+        f.write('jensen shannon divergence respect to all opinions: '+str(js_opinions)+'\n')
+        f.write('jensen shannon divergence respect to news: '+str(js_news)+'\n')
+        print('\n\n***----------------------------------------------------------------------------------------------------***\n\n')
+        f.write('\n\n***----------------------------------------------------------------------------------------------------***\n\n')
+    f.close()
+
+
+
 
 if __name__ == "__main__":
     import sys
     import time
     import multiprocessing as mp
 
-    function_map = {'v1':v1,'v2':v2,'v3_4':v3_4,'v5_6':v5_6,'v1_3_4_we':v1_3_4_we,'v2_5_6_we':v2_5_6_we,'comb':comb,'comb_sum':comb_sum,'tfidf':tf_idf, 'tfidf_comb':tf_idf_comb}
+    function_map = {'title':v4_title,'v1':v1,'v2':v2,'v3_4':v3_4,'v5_6':v5_6,'v1_3_4_we':v1_3_4_we,'v2_5_6_we':v2_5_6_we,'comb':comb,'comb_sum':comb_sum,'tfidf':tf_idf, 'tfidf_comb':tf_idf_comb}
     function = sys.argv[1]
     opinion_path = sys.argv[2]
     news_path = sys.argv[3]
